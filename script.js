@@ -1,135 +1,97 @@
-const numbers = document.querySelectorAll(".number")
+"use strict";
 
-numbers.forEach((number) => {
-    number.addEventListener("click", (event) => {
-        console.log(event.target.value)
-    })
-})
-
-const calculatorScreen = document.querySelector('.calculator-screen')
+const numbers = document.querySelectorAll(".number");
+const calculatorScreen = document.querySelector(".calculator-screen");
+const operators = document.querySelectorAll(".operator");
+const equalSign = document.querySelector(".equal-sign");
+const clearBtn = document.querySelector(".all-clear");
+const decimal = document.querySelector(".decimal");
 
 const updateScreen = (number) => {
-    calculatorScreen.value = number
-}
+  calculatorScreen.value = number;
+};
 
-const numbers = document.querySelectorAll(".number")
+let prevNumber = "";
+let calculationOperator = "";
+let currentNumber = '0';
+
+const inputNumber = (number) => {
+  if (currentNumber === "0") {
+    currentNumber = number;
+  } else {
+    currentNumber += number;
+  }
+};
 
 numbers.forEach((number) => {
-    number.addEventListener("click", (event) => {
-        updateScreen(event.target.value)
-    })
-})
-
-let prevNumber = ''
-let CalculationOperator = ''
-let currentNumber = '0'
-
-const inputNumber = (number) => {
-    currentNumber = number
-}
-
-numbers.forEach((number) => {
-    number.addEventListener("click", (event) => {
-        inputNumber(event.target.value)
-        updateScreen(currentNumber)
-    })
-})
-
-const inputNumber = (number) => {
-    currentNumber += number
-}
-
-const inputNumber = (number) => {
-    if (currentNumber === '0') {
-        currentNumber = number 
-    } else {
-        currentNumber += number
-    }
-}
-
-const operators = document.querySelectorAll(".operator")
+  number.addEventListener("click", (event) => {
+    inputNumber(event.target.value);
+    updateScreen(currentNumber);
+  });
+});
 
 operators.forEach((operator) => {
-    operator.addEventListener("click", (event) => {
-        console.log(event.target.value)
-    })
-})
+  operator.addEventListener("click", (event) => {
+    inputOperator(event.target.value);
+  });
+});
 
 const inputOperator = (operator) => {
-    if (CalculationOperator === '') {
-        prevNumber = currentNumber
-    }
-    CalculationOperator = operator
-    currentNumber = ''
-}
+  if (calculationOperator === "") {
+    prevNumber = currentNumber;
+  }
+  calculationOperator = operator;
+  currentNumber = "0";
+};
 
-const equalSign = document.querySelector('.equal-sign')
-
-equalSign.addEventListener('click', () => {
-    console.log('equal button is pressed')
-})
-
-const calculate = () => {
-    let result = ''
-    switch(CalculationOperator) {
-        case "+":
-            result = prevNumber + currentNumber
-            break
-        case "-":
-            result = prevNumber - currentNumber
-            break
-        case "*":
-            result = prevNumber * currentNumber
-            break
-        case "/":
-            result = prevNumber / currentNumber
-            break
-        default:
-            break        
-    }
-    currentNumber = result
-    CalculationOperator = ''
-}
-
-const equalSign = document.querySelector('.equal-sign') 
-
-equalSign.addEventListener('click', () => {
-    calculate()
-    updateScreen(currentNumber)
-})
+equalSign.addEventListener("click", () => {
+  calculate();
+  updateScreen(currentNumber);
+});
 
 const calculate = () => {
-    let result = ''
-    switch(CalculationOperator) {
-        case '+':
-            result = parseFloat(prevNumber) + parseFloat(currentNumber)
-            break
-    }
-}
+  let result = "";
 
-const clearBtn = document.querySelector('.all-clear')
+  switch (calculationOperator) {
+    case "+":
+      result = parseFloat(prevNumber) + parseFloat(currentNumber);
+      break;
+    case "-":
+      result = parseFloat(prevNumber) - parseFloat(currentNumber);
+      break;
+    case "*":
+      result = parseFloat(prevNumber) * parseFloat(currentNumber);
+      break;
+    case "/":
+      result = parseFloat(prevNumber) / parseFloat(currentNumber);
+      break;
+    default:
+      break;
+  }
 
-clearBtn.addEventListener('click', () => {
-    clearAll()
-    updateScreen(currentNumber)
-})
+  currentNumber = result;
+  calculationOperator = "";
+};
+
+clearBtn.addEventListener("click", () => {
+    clearAll();
+    updateScreen(currentNumber);
+});
 
 const clearAll = () => {
-    prevNumber = ''
-    CalculationOperator = ''
-    currentNumber = '0'
-}
+    prevNumber = "";
+    calculationOperator = "";
+    currentNumber = '0';
+};
 
-const decimal = document.querySelector('.decimal')
+const inputDecimal = (dot) =>{
+    if(currentNumber.includes('.')){
+        return;
+    }
+    currentNumber += dot;
+}
 
 decimal.addEventListener('click', (event) => {
-    inputDeceimal(event.target.value)
-    updateScreen(currentNumber)
-})
-
-inputDeceimal = (dot) => {
-    if (currentNumber.includes('.')) {
-        return
-    }
-    currentNumber += dot
-}
+    inputDecimal(event.target.value);
+    updateScreen(currentNumber);
+});
